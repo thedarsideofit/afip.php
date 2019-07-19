@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.wscheckar.dvaasi.desein.afip.gob/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="CheckArService" targetNamespace="http://ws.wscheckar.dvaasi.desein.afip.gob/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.wscheckar.dvaasi.desein.afip.gob/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.wscheckar.dvaasi.desein.afip.gob/">
+  <xs:element name="dummy" type="tns:dummy"/>
+  <xs:element name="dummyResponse" type="tns:dummyResponse"/>
+  <xs:element name="esAdminRel" type="tns:esAdminRel"/>
+  <xs:element name="esAdminRelResponse" type="tns:esAdminRelResponse"/>
+  <xs:complexType name="dummy">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="dummyResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statusResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="info" type="tns:info"/>
+      <xs:element minOccurs="0" name="status" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="info">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="server" type="xs:string"/>
+      <xs:element minOccurs="0" name="timestamp" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="esAdminRel">
+    <xs:sequence>
+      <xs:element name="autorizado" type="xs:string"/>
+      <xs:element name="representado" type="xs:string"/>
+      <xs:element name="cuit" type="xs:string"/>
+      <xs:element name="token" type="xs:string"/>
+      <xs:element name="sign" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="esAdminRelResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:checkResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="checkResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="autorizado" type="xs:string"/>
+      <xs:element minOccurs="0" name="esAdministradorDeRelaciones" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="info" type="tns:info"/>
+      <xs:element minOccurs="0" name="representado" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CuitNoAutorizadoFault" type="tns:CuitNoAutorizadoFault"/>
+  <xs:complexType name="CuitNoAutorizadoFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CredencialInvalidaFault" type="tns:CredencialInvalidaFault"/>
+  <xs:complexType name="CredencialInvalidaFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="esAdminRelResponse">
+    <wsdl:part element="tns:esAdminRelResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dummy">
+    <wsdl:part element="tns:dummy" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dummyResponse">
+    <wsdl:part element="tns:dummyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="esAdminRel">
+    <wsdl:part element="tns:esAdminRel" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CredencialInvalidaException">
+    <wsdl:part element="tns:CredencialInvalidaFault" name="CredencialInvalidaException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CuitNoAutorizadoException">
+    <wsdl:part element="tns:CuitNoAutorizadoFault" name="CuitNoAutorizadoException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Check">
+    <wsdl:operation name="dummy">
+      <wsdl:input message="tns:dummy" name="dummy">
+    </wsdl:input>
+      <wsdl:output message="tns:dummyResponse" name="dummyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="esAdminRel">
+      <wsdl:input message="tns:esAdminRel" name="esAdminRel">
+    </wsdl:input>
+      <wsdl:output message="tns:esAdminRelResponse" name="esAdminRelResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:CredencialInvalidaException" name="CredencialInvalidaException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:CuitNoAutorizadoException" name="CuitNoAutorizadoException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CheckArServiceSoapBinding" type="tns:Check">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="dummy">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="dummy">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="dummyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="esAdminRel">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="esAdminRel">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="esAdminRelResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CredencialInvalidaException">
+        <soap:fault name="CredencialInvalidaException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="CuitNoAutorizadoException">
+        <soap:fault name="CuitNoAutorizadoException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CheckArService">
+    <wsdl:port binding="tns:CheckArServiceSoapBinding" name="CheckArPort">
+      <soap:address location="https://wsaahomo.afip.gov.ar:443/ws-check-ar/CheckArService/CheckBean"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

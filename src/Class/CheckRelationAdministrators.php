@@ -1,21 +1,21 @@
 <?php
 /**
- * SDK for AFIP Register Scope Four (ws_sr_padron_a4)
+ * SDK for AFIP Register Scope Ten (ws_sr_padron_a10)
  * 
- * @link http://www.afip.gob.ar/ws/ws_sr_padron_a4/manual_ws_sr_padron_a4_v1.1.pdf WS Specification
+ * @link http://www.afip.gob.ar/ws/ws_sr_padron_a10/manual_ws_sr_padron_a10_v1.1.pdf WS Specification
  *
- * @author 	Ivan Muñoz
+ * @author 	Diego Ramirez
  * @package Afip
  * @version 1.0
  **/
 
-class RegisterScopeFour extends AfipWebService {
+class CheckRelationAdministrators extends AfipWebService {
 
 	var $soap_version 	= SOAP_1_1;
-	var $WSDL 			= 'ws_sr_padron_a4-production.wsdl';
-	var $URL 			= 'https://aws.afip.gov.ar/sr-padron/webservices/personaServiceA4';
-	var $WSDL_TEST 		= 'ws_sr_padron_a4.wsdl';
-	var $URL_TEST 		= 'https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA4';
+	var $WSDL 			= 'ws-check-ar.wsdl';
+	var $URL 			= 'https://wsaa.afip.gov.ar/ws-check-ar/CheckArService/CheckBean';
+	var $WSDL_TEST 		= 'ws-check-ar.wsdl';
+	var $URL_TEST 		= 'https://wsaahomo.afip.gov.ar/ws-check-ar/CheckArService/CheckBean';
 
 	/**
 	 * Asks to web service for servers status {@see WS 
@@ -44,19 +44,20 @@ class RegisterScopeFour extends AfipWebService {
 	 * if it exists, returns persona property of response {@see 
 	 * WS Specification item 3.2.2}
 	**/
-	public function GetTaxpayerDetails($identifier)
+	public function GetIsAdminRel($autorizado, $representado)
 	{
-		$ta = $this->afip->GetServiceTA('ws_sr_padron_a4');
+		$ta = $this->afip->GetServiceTA('ws-check-ar');
 		
 		$params = array(
 			'token' 			=> $ta->token,
 			'sign' 				=> $ta->sign,
-			'cuitRepresentada' 	=> $this->afip->CUIT,
-			'idPersona' 		=> $identifier
+			'cuit' 	            => $this->afip->CUIT,
+			'autorizado' 		=> $autorizado,
+			'representado'		=> $representado,
 		);
 
 		try {
-			return $this->ExecuteRequest('getPersona', $params);
+			return $this->ExecuteRequest('esAdminRel', $params);
 		} catch (Exception $e) {
 			if (strpos($e->getMessage(), 'No existe') !== FALSE)
 				return NULL;
@@ -78,8 +79,9 @@ class RegisterScopeFour extends AfipWebService {
 	public function ExecuteRequest($operation, $params = array())
 	{
 		$results = parent::ExecuteRequest($operation, $params);
-
-		return $results->{$operation == 'getPersona' ? 'personaReturn' : 'return'};
+                return $results;
+                
+		return $results->{$operation == 'esAdminRel' ? 'esAdminRel' : 'return'};
 	}
 }
 

@@ -79,7 +79,8 @@ class Afip {
 		'ElectronicBilling',
 		'RegisterScopeFour',
 		'RegisterScopeFive',
-		'RegisterScopeTen'
+		'RegisterScopeTen',
+		'CheckRelationAdministrators'
 	);
 
 	function __construct($options)
@@ -247,7 +248,7 @@ class Afip {
 				if (!file_exists($file)) 
 					throw new Exception("Failed to open ".$file."\n", 1);
 
-				include_once $file;
+				include $file;
 
 				return ($this->{$property} = new $property($this));
 			}
